@@ -45,7 +45,7 @@ public class CowKillerNode extends Node {
 
   private Area COW_AREA = new Area(3253, 3255, 3265, 3269, 0);
   private Area TRAPDOOR_AREA = new Area(3208, 3217, 3210, 3215, 0);
-  private Area LADDER_AREA = new Area(3208, 9617, 3210, 9615, 0);
+  private Area LADDER_AREA = new Area(3208, 9615, 3218, 9623, 0);
   private Tile BANK_TILE = new Tile(3218, 9623, 0);
   private Tile OUTSIDE_GATE_TILE = new Tile(3250, 3265, 0);
   private Tile INSIDE_GATE_TILE = new Tile(3253, 3266, 0);
@@ -89,7 +89,7 @@ public class CowKillerNode extends Node {
         Walking.walk(COW_AREA.getRandomTile());
         Sleep.sleep(Calculations.random(1000, 3000));
       }
-    } else if (!Inventory.isFull() && COW_AREA.contains(Util.getCurrentTile())) {
+    } else if (!Inventory.isFull()) {
       if (Players.getLocal().isInCombat()) {
         return 1;
       }

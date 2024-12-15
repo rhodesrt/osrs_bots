@@ -22,7 +22,7 @@ import com.flask1983.grandexchange.nodes.CowKillerNode;
 
 @ScriptManifest(name = "Cow Killer", description = "Cow Killer script.", author = "flask1983", version = 1.0, category = Category.COMBAT, image = "")
 public final class CowKiller extends AbstractScript {
-  private int MAX_RUN_TIME = 171;
+  private int MAX_RUN_TIME = 63;
 
   private long timeBegan;
   private long runTime;
