@@ -1,28 +1,23 @@
 package com.flask1983.grandexchange;
 
-import java.util.concurrent.TimeUnit;
 import java.awt.Graphics;
+import java.util.concurrent.TimeUnit;
 
-import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.dreambot.api.methods.tabs.Tabs;
-import org.dreambot.api.randoms.RandomEvent;
-import org.dreambot.api.randoms.RandomManager;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.utilities.Logger;
-import org.dreambot.api.utilities.Sleep;
 
+import com.flask1983.grandexchange.nodes.CowKillerNode;
 import com.flask1983.grandexchange.nodes.Node;
 import com.flask1983.grandexchange.util.Util;
-import com.flask1983.grandexchange.nodes.CowKillerNode;
 
 @ScriptManifest(name = "Cow Killer", description = "Cow Killer script.", author = "flask1983", version = 1.0, category = Category.COMBAT, image = "")
 public final class CowKiller extends AbstractScript {
-  private int MAX_RUN_TIME = 63;
+  private int MAX_RUN_TIME = 140;
 
   private long timeBegan;
   private long runTime;
@@ -38,7 +33,7 @@ public final class CowKiller extends AbstractScript {
   public void onStart() {
     timeBegan = System.currentTimeMillis();
 
-    beginXp = Skills.getExperience(Skill.RANGED);
+    beginXp = Skills.getExperience(Skill.STRENGTH);
     Logger.log("Cow killer script starting up.");
   }
 
@@ -61,13 +56,13 @@ public final class CowKiller extends AbstractScript {
     int yStep = 15;
 
     runTime = System.currentTimeMillis() - this.timeBegan;
-    currentXp = Skills.getExperience(Skill.RANGED);
+    currentXp = Skills.getExperience(Skill.STRENGTH);
     gainedXp = currentXp - beginXp;
     int xpPerHour = (int) (gainedXp / (runTime / 1000.0 / 60.0 / 60.0)) / 1000;
     g.drawString(ft(runTime), leftX, lowestYText);
     g.drawString("xp/hr: " + xpPerHour + "k", leftX, lowestYText - yStep);
     g.drawString("xp gained: " + gainedXp, leftX, lowestYText - yStep * 2);
-    g.drawString("Ranged: " + Skills.getRealLevel(Skill.RANGED), leftX, lowestYText - yStep * 3);
+    g.drawString("Strength: " + Skills.getRealLevel(Skill.STRENGTH), leftX, lowestYText - yStep * 3);
   }
 
   private String ft(long duration) {

@@ -1,25 +1,20 @@
 package com.flask1983.grandexchange;
 
-import java.util.concurrent.TimeUnit;
 import java.awt.Graphics;
+import java.util.concurrent.TimeUnit;
 
-import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.dreambot.api.methods.tabs.Tabs;
-import org.dreambot.api.randoms.RandomEvent;
-import org.dreambot.api.randoms.RandomManager;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.utilities.Logger;
-import org.dreambot.api.utilities.Sleep;
 
 import com.flask1983.grandexchange.nodes.Node;
-import com.flask1983.grandexchange.util.Util;
 import com.flask1983.grandexchange.nodes.SeersNode;
+import com.flask1983.grandexchange.util.Util;
 
 @ScriptManifest(name = "Seers", description = "Seers script.", author = "flask1983", version = 1.0, category = Category.AGILITY, image = "")
 public final class Seers extends AbstractScript {
@@ -55,6 +50,7 @@ public final class Seers extends AbstractScript {
 
     if (TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - this.timeBegan) >= MAX_RUN_TIME) {
       Util.logout();
+      Logger.log("Stopping script. Gained " + gainedXp + " agility xp.");
       return -1;
     }
     return Calculations.random(100, 1000); // ms until loop runs again

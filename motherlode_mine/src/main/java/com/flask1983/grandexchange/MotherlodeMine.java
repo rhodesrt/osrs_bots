@@ -1,28 +1,23 @@
 package com.flask1983.grandexchange;
 
-import java.util.concurrent.TimeUnit;
 import java.awt.Graphics;
+import java.util.concurrent.TimeUnit;
 
-import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.dreambot.api.methods.tabs.Tabs;
-import org.dreambot.api.randoms.RandomEvent;
-import org.dreambot.api.randoms.RandomManager;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.utilities.Logger;
-import org.dreambot.api.utilities.Sleep;
 
+import com.flask1983.grandexchange.nodes.MotherlodeMineNode;
 import com.flask1983.grandexchange.nodes.Node;
 import com.flask1983.grandexchange.util.Util;
-import com.flask1983.grandexchange.nodes.MotherlodeMineNode;
 
 @ScriptManifest(name = "Motherlode Mine", description = "Motherlode Mine script.", author = "flask1983", version = 1.0, category = Category.FLETCHING, image = "")
 public final class MotherlodeMine extends AbstractScript {
-  private int MAX_RUN_TIME = 171;
+  private int MAX_RUN_TIME = 110;
 
   private long timeBegan;
   private long runTime;
