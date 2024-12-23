@@ -1,44 +1,26 @@
 package com.flask1983.grandexchange.nodes;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.dreambot.api.utilities.AccountManager;
-import org.dreambot.api.utilities.Logger;
-import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.interactive.Entity;
-import org.dreambot.api.wrappers.interactive.GameObject;
-import org.dreambot.api.wrappers.interactive.NPC;
-import org.dreambot.api.wrappers.interactive.Player;
-import org.dreambot.api.wrappers.items.GroundItem;
-import org.dreambot.api.wrappers.items.Item;
-import org.dreambot.api.wrappers.widgets.WidgetChild;
-
-import com.flask1983.grandexchange.util.Util;
-
-import org.dreambot.api.Client;
-import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
-import org.dreambot.api.methods.ViewportTools;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
-import org.dreambot.api.methods.container.impl.equipment.Equipment;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
-import org.dreambot.api.methods.grandexchange.GrandExchange;
-import org.dreambot.api.methods.grandexchange.GrandExchangeItem;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.widget.Widgets;
-import org.dreambot.api.methods.worldhopper.WorldHopper;
-import org.dreambot.api.randoms.RandomEvent;
-import org.dreambot.api.script.listener.ExperienceListener;
+import org.dreambot.api.script.ScriptManager;
+import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.NPC;
+import org.dreambot.api.wrappers.items.GroundItem;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
+
+import com.flask1983.grandexchange.util.Util;
 
 public class GreenDragonKillerNode extends Node {
   private String GAMES_NECK_NAME = "Games necklace";
@@ -48,7 +30,7 @@ public class GreenDragonKillerNode extends Node {
   private int ACCUMULATOR_ID = 10499;
   private int BONE_BOLT_ID = 8882;
   private int DORGESHUUN_CROSSBOW_ID = 8880;
-  private int HARD_LEATHER_BODY_ID = 1131;
+  private int GREEN_DHIDE_BODY_ID = 1135;
   private int ANTI_DFIRE_SHIELD_ID = 1540;
   private int GREEN_VAMBS_ID = 1065;
 
@@ -96,30 +78,37 @@ public class GreenDragonKillerNode extends Node {
     Bank.depositAllEquipment();
 
     Bank.withdraw(SWORDFISH_ID, 2);
-    Bank.withdraw(item -> item.getName().startsWith(GAMES_NECK_NAME), 1);
-    Bank.withdraw(ACCUMULATOR_ID, 1);
     Bank.withdraw(BONE_BOLT_ID, 120);
+    Bank.withdraw(item -> item.getName().startsWith(GAMES_NECK_NAME), 1);
+    Bank.withdraw(item -> item.getName().startsWith(DUELING_RING_NAME), 1);
+    Bank.withdraw(ACCUMULATOR_ID, 1);
     Bank.withdraw(DORGESHUUN_CROSSBOW_ID, 1);
-    Bank.withdraw(HARD_LEATHER_BODY_ID, 1);
     Bank.withdraw(ANTI_DFIRE_SHIELD_ID, 1);
     Bank.withdraw(GREEN_VAMBS_ID, 1);
-    Bank.withdraw(item -> item.getName().startsWith(DUELING_RING_NAME), 1);
+    Bank.withdraw(GREEN_DHIDE_BODY_ID, 1);
+
+    while (Inventory.count(BONE_BOLT_ID) < 120) {
+      Bank.withdraw(BONE_BOLT_ID, 120);
+    }
     Bank.close();
 
     Inventory.interact(item -> item.getName().startsWith(GAMES_NECK_NAME));
     Inventory.interact(ACCUMULATOR_ID);
     Inventory.interact(BONE_BOLT_ID);
     Inventory.interact(DORGESHUUN_CROSSBOW_ID);
-    Inventory.interact(HARD_LEATHER_BODY_ID);
+    Inventory.interact(GREEN_DHIDE_BODY_ID);
     Inventory.interact(ANTI_DFIRE_SHIELD_ID);
     Inventory.interact(GREEN_VAMBS_ID);
     Inventory.interact(item -> item.getName().startsWith(DUELING_RING_NAME));
   }
 
   public void travelToDragons() {
-    if (Players.getLocal().getHealthPercent() < 75) {
+    if (Players.getLocal().getHealthPercent() < 75 && !Util.isPlayerAttackingMe()) {
       Inventory.interact(SWORDFISH_ID);
       Sleep.sleep(Calculations.random(400, 1000));
+    } else if (Util.isPlayerAttackingMe()) {
+      Util.teleportCastleWars();
+      ScriptManager.getScriptManager().stop();
     } else if (Util.getCurrentTile().equals(bankTile)) {
       Util.teleportCorp();
       Sleep.sleepUntil(() -> CORP_AREA.contains(Util.getCurrentTile()), 4000);
@@ -171,6 +160,7 @@ public class GreenDragonKillerNode extends Node {
         Sleep.sleepUntil(() -> Util.getCurrentTile().equals(SAFESPOT), 4000);
       } else if (dragon.getHealthPercent() == 0) {
         Tile[] deadDragonTiles = dragon.getSurroundingArea(2).getTiles();
+        Walking.walk(dragon.getTile());
         Sleep.sleepUntil(() -> !dragon.exists(), 5000);
         for (Tile tile : deadDragonTiles) {
           for (GroundItem item : GroundItems.getForTile(tile)) {

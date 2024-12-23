@@ -1,12 +1,9 @@
 package com.flask1983.grandexchange.util;
 
-import java.awt.Dialog;
-import java.util.List;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.dreambot.api.Client;
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
@@ -14,18 +11,18 @@ import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.magic.Magic;
+import org.dreambot.api.methods.magic.Normal;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.tabs.Tabs;
+import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.randoms.RandomEvent;
-import org.dreambot.api.script.event.impl.EquipmentItemEvent;
-import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.interactive.Player;
-import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 
 public class Util {
@@ -34,6 +31,11 @@ public class Util {
   private static Tile DRAGON_FIGHT_TILE = new Tile(3347, 3675, 0);
   private static Tile DRAGON_FIGHT_TILE_1 = new Tile(3340, 3672, 0);
   private static Area DRAGON_AREA = new Area(3339, 3667, 3347, 3676, 0);
+  private static String DUELING_RING_NAME = "Ring of dueling";
+  private static Area LUMBRIDGE_TELE_AREA = new Area(3217, 3211, 3226, 3225, 0);
+  private static Tile TRAPDOOR_TILE = new Tile(3210, 3216, 0);
+  private static int TRAPDOOR_ID = 14880;
+  private static int BANK_CHEST_ID = 12308;
 
   public static Tile getCurrentTile() {
     return Players.getLocal().getTile();
@@ -74,8 +76,25 @@ public class Util {
   }
 
   public static void teleportCastleWars() {
-    Equipment.getItemInSlot(EquipmentSlot.RING).interact("Castle Wars");
-    Inventory.open();
+    if (Equipment.getItemInSlot(EquipmentSlot.RING).getName().startsWith(DUELING_RING_NAME)) {
+      Equipment.getItemInSlot(EquipmentSlot.RING).interact("Castle Wars");
+      Inventory.open();
+    } else {
+      if (Magic.canCast(Normal.HOME_TELEPORT)) {
+        Magic.castSpell(Normal.HOME_TELEPORT);
+        Sleep.sleepUntil(() -> LUMBRIDGE_TELE_AREA.contains(Util.getCurrentTile()), 15000);
+      }
+
+      while (!Util.getCurrentTile().equals(TRAPDOOR_TILE)) {
+        Walking.walk(TRAPDOOR_TILE);
+        Sleep.sleep(Calculations.random(2000, 4000));
+      }
+      GameObject trapdoor = GameObjects.closest(TRAPDOOR_ID);
+      trapdoor.interact();
+      Sleep.sleep(Calculations.random(2000, 4000));
+
+      openBank();
+    }
   }
 
   public static boolean isPlayerAttackingMe() {

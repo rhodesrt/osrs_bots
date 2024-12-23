@@ -1,40 +1,17 @@
 package com.flask1983.grandexchange.nodes;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.dreambot.api.utilities.AccountManager;
-import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
+import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.interactive.Entity;
-import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
-import org.dreambot.api.wrappers.items.GroundItem;
-import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 
 import com.flask1983.grandexchange.util.Util;
-
-import org.dreambot.api.Client;
-import org.dreambot.api.input.Mouse;
-import org.dreambot.api.methods.Calculations;
-import org.dreambot.api.methods.ViewportTools;
-import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.container.impl.bank.Bank;
-import org.dreambot.api.methods.grandexchange.GrandExchange;
-import org.dreambot.api.methods.grandexchange.GrandExchangeItem;
-import org.dreambot.api.methods.interactive.GameObjects;
-import org.dreambot.api.methods.interactive.NPCs;
-import org.dreambot.api.methods.interactive.Players;
-import org.dreambot.api.methods.item.GroundItems;
-import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.tabs.Tabs;
-import org.dreambot.api.methods.walking.impl.Walking;
-import org.dreambot.api.methods.widget.Widgets;
-import org.dreambot.api.randoms.RandomEvent;
-import org.dreambot.api.script.listener.ExperienceListener;
 
 public class HideTannerNode extends Node {
   private Area BANK_AREA = new Area(3269, 3165, 3271, 3168, 0);
@@ -43,8 +20,12 @@ public class HideTannerNode extends Node {
   private String ELLIS_ACTION = "Trade";
   private String LEATHER_WIDGET_ACTION = "Tan All";
 
-  private int HIDE_ID = 1739;
-  private int LEATHER_ID = 1743;
+  // cowhide = 1739
+  // hard leather = 1743
+  // green dhide = 1753
+  // green dleather = 1745
+  private int HIDE_ID = 1753;
+  private int LEATHER_ID = 1745;
 
   public boolean accept(int i) {
     return true;
@@ -88,7 +69,9 @@ public class HideTannerNode extends Node {
       ellis.interact(ELLIS_ACTION);
       Sleep.sleep(Calculations.random(2000, 3000));
 
-      WidgetChild LEATHER_WIDGET = Widgets.get(324, 101);
+      // Hard leather = 324, 101
+      // Green dleather = 324, 104
+      WidgetChild LEATHER_WIDGET = Widgets.get(324, 104);
       if (LEATHER_WIDGET != null) {
         LEATHER_WIDGET.interact(LEATHER_WIDGET_ACTION);
         Sleep.sleep(Calculations.random(200, 1000));
