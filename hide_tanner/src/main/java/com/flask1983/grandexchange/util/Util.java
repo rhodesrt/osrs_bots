@@ -1,24 +1,17 @@
 package com.flask1983.grandexchange.util;
 
-import java.util.List;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.dreambot.api.Client;
-import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
-import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.randoms.RandomEvent;
-import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
-import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 
 public class Util {
@@ -50,12 +43,12 @@ public class Util {
   }
 
   public static void depositLeather() {
-    final int LEATHER_ID = 1743;
+    final int LEATHER_ID = 1745;
     Bank.depositAll(LEATHER_ID);
   }
 
   public static void withdrawHides() {
-    final int HIDE_ID = 1739;
+    final int HIDE_ID = 1753;
     Bank.withdrawAll(HIDE_ID);
   }
 

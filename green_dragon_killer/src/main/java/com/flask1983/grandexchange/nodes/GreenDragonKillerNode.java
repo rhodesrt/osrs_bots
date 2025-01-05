@@ -33,6 +33,7 @@ public class GreenDragonKillerNode extends Node {
   private int GREEN_DHIDE_BODY_ID = 1135;
   private int ANTI_DFIRE_SHIELD_ID = 1540;
   private int GREEN_VAMBS_ID = 1065;
+  private int GREEN_DHIDE_CHAPS_ID = 1099;
 
   private Tile bankTile = new Tile(2443, 3083, 0);
 
@@ -86,6 +87,7 @@ public class GreenDragonKillerNode extends Node {
     Bank.withdraw(ANTI_DFIRE_SHIELD_ID, 1);
     Bank.withdraw(GREEN_VAMBS_ID, 1);
     Bank.withdraw(GREEN_DHIDE_BODY_ID, 1);
+    Bank.withdraw(GREEN_DHIDE_CHAPS_ID, 1);
 
     while (Inventory.count(BONE_BOLT_ID) < 120) {
       Bank.withdraw(BONE_BOLT_ID, 120);
@@ -99,6 +101,7 @@ public class GreenDragonKillerNode extends Node {
     Inventory.interact(GREEN_DHIDE_BODY_ID);
     Inventory.interact(ANTI_DFIRE_SHIELD_ID);
     Inventory.interact(GREEN_VAMBS_ID);
+    Inventory.interact(GREEN_DHIDE_CHAPS_ID);
     Inventory.interact(item -> item.getName().startsWith(DUELING_RING_NAME));
   }
 
