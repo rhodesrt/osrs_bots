@@ -3,3 +3,5 @@
 
 # Build Bot
 `mvn package`
+
+no-op
